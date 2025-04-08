@@ -34,5 +34,8 @@ I'm looking for an opportunity to enter the tech industry through practical, mea
 
 Let’s build the future together.
 
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![requirements](https://img.shields.io/badge/dependencies-requirements.txt-yellow)
+
 ---
 
