@@ -1,32 +1,38 @@
-# 👩‍💻 Sobre mim
+# 👩‍💻 About Me
 
-Em transição para a área de tecnologia, estudo **Inteligência Artificial** com foco prático na Rocketseat. Tenho interesse em atuar com **IA aplicada** e **DevOps**.
+I'm transitioning into the tech industry with a strong focus on **Artificial Intelligence** through hands-on learning at Rocketseat. My interests lie in **applied AI**, **DevOps**, and building impactful solutions that solve real-world problems.
 
----
-
-## 💡 Áreas de Interesse
-
-- Inteligência Artificial
-- Análise e Visualização de Dados
-- DevOps (próximo passo)
+Currently, I'm developing projects involving **data analysis**, **regression with Scikit-learn**, and **data visualization** to solidify my knowledge and kickstart my professional journey in tech.
 
 ---
 
-## 🛠️ Ferramentas e Tecnologias
+## 💡 Areas of Interest
 
-**Análise de Dados & IA**  
-`Python` • `Pandas` • `NumPy` • `Matplotlib` • `Sweetviz` • `Jupyter Notebook`
+- Artificial Intelligence
+- Machine Learning
+- Data Analysis & Visualization
+- DevOps (next step)
 
-**Ambiente de Desenvolvimento**  
+---
+
+## 🛠️ Tools & Technologies
+
+**Data Analysis & AI**  
+`Python` • `Pandas` • `NumPy` • `Matplotlib` • `Seaborn` • `Sweetviz` • `Scikit-learn` • `Pingouin` • `Joblib` • `Jupyter Notebook`
+
+**Development Environment**  
 `VS Code`
 
-**Próximos estudos:**  
-`Scikit-learn` • `Docker` • `CI/CD` • `JavaScript`
+**Upcoming Studies**  
+`Docker` • `CI/CD` • `FastAPI` • `JavaScript`
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Career Goal
 
-Busco uma oportunidade para ingressar na área de tecnologia, com foco em projetos práticos e impacto real. Acredito no poder transformador da IA, assim como outras grandes revoluções tecnológicas da história.
+I'm looking for an opportunity to enter the tech industry through practical, meaningful work. I believe in the transformative power of AI — just like other major technological revolutions throughout history.
+
+Let’s build the future together.
 
 ---
+
