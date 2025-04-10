@@ -1,0 +1,46 @@
+# 🏠 rental_price_challenge
+
+This is my **first Machine Learning project with a user interface (UI)**.  
+It predicts rental prices for houses based on simple input features like size, number of rooms, and location. The UI was built using [Gradio](https://gradio.app/) to make it easy for anyone to test the model.
+
+---
+
+## 🚀 Purpose
+
+To complete a full ML pipeline — from data analysis and model training to a functional interface — with a beginner-friendly approach.
+
+---
+
+## ⚙️ How It Works
+
+The app uses a **Linear Regression model** trained on a simplified dataset to predict rental prices.
+
+### ✨ User Inputs:
+- Size of the house (in m²)
+- Number of bedrooms
+- Age of the house
+- Garage (yes or no)
+- Location: Downtown, Suburb, or Outskirts
+
+### 📤 Output:
+- Estimated rental price (R$)
+
+---
+
+## 📁 Project Structure
+
+- `rental_price_challenge.ipynb`: Main notebook with data prep, model training, and the Gradio UI.
+- `.pkl` model file is **not included**, since it is generated automatically when running the notebook.
+- `dataset_aluguel.csv`: The dataset used for training.
+- The app interface is included and launches directly from the notebook.
+
+---
+
+## ▶️ Run It Locally
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/AranhaNeto94/Neto.git
+cd Neto/notebooks/rental_price_challenge
+pip install -r ../../requirements.txt
