@@ -6,6 +6,5 @@ scikit-learn
 pingouin
 joblib
 sweetviz
-pingouin
 gradio
 jupyter
