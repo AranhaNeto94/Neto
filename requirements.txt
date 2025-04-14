@@ -7,4 +7,7 @@ pingouin
 joblib
 sweetviz
 gradio
+streamlit
+fastAPI
+json
 jupyter
