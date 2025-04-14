@@ -1,0 +1,20 @@
+# 📈 Previsão de Receita de Vendas
+
+Este projeto utiliza regressão linear e polinomial para prever a receita de vendas com base em variáveis como tempo de experiência, número de vendas realizadas e fator sazonal.
+
+## 🧪 Tecnologias usadas
+`Python` • `Pandas` • `NumPy` • `Matplotlib` • `Seaborn` • `Scikit-learn` • `Joblib` • `FastAPI` • `Streamlit`
+
+## 🔍 Etapas do projeto
+1. **Análise exploratória dos dados (EDA):** Análise inicial dos dados para identificar padrões e possíveis correlações.
+2. **Preparação dos dados:** Limpeza e transformação dos dados, incluindo a codificação de variáveis categóricas com `LabelEncoder`.
+3. **Criação e avaliação do modelo de regressão linear e polinomial:** Teste de modelos de regressão para prever a receita de vendas.
+4. **Avaliação de desempenho do modelo:** Análise dos resultados do modelo com métricas como RMSE, R², e visualização dos resíduos.
+5. **Validação de normalidade:** Teste de normalidade nos resíduos usando o Shapiro-Wilk e o Kolmogorov-Smirnov.
+6. **Deploy da API e interface de usuário:** Criação de uma API com `FastAPI` para predições em tempo real e interface de usuário com `Streamlit`.
+
+## 📌 Conclusão
+O modelo foi capaz de prever a receita de vendas com base nas variáveis fornecidas. Apesar de apresentar algumas flutuações nos resultados do RMSE e R², o modelo segue útil para cenários de previsão de vendas, especialmente com dados ajustados corretamente.
+
+## 📁 Dataset
+Arquivo CSV incluído na pasta `dataset/`.
