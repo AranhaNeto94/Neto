@@ -6,10 +6,15 @@ Python • Pandas • NumPy • Matplotlib • Seaborn • Scikit-learn
 
 🔍 Etapas do projeto
 Análise exploratória dos dados (EDA): Estudo inicial para entender a distribuição das variáveis e relações com o segmento.
+
 Pré-processamento: Conversão de colunas categóricas com LabelEncoder, verificação de valores nulos e preparação dos dados para o modelo.
+
 Divisão em treino e teste: Separação dos dados com train_test_split e definição das variáveis X (features) e y (target).
+
 Criação e treinamento do modelo: Implementação de um modelo de Árvore de Decisão com DecisionTreeClassifier.
+
 Avaliação de desempenho: Cálculo da acurácia com validação cruzada e exibição da matriz de confusão.
+
 Visualização da árvore: Geração do gráfico da árvore de decisão com plot_tree, mostrando os critérios de divisão das classes.
 
 📌 Conclusão
