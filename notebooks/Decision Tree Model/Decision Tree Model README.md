@@ -5,6 +5,7 @@ Este projeto utiliza o algoritmo de árvore de decisão para classificar empresa
 Python • Pandas • NumPy • Matplotlib • Seaborn • Scikit-learn
 
 🔍 Etapas do projeto
+
 Análise exploratória dos dados (EDA): Estudo inicial para entender a distribuição das variáveis e relações com o segmento.
 
 Pré-processamento: Conversão de colunas categóricas com LabelEncoder, verificação de valores nulos e preparação dos dados para o modelo.
