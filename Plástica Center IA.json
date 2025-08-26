@@ -1,0 +1,2660 @@
+{
+  "name": "Plástica Center IA",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "20ee0a8d-6a1b-4faf-9f58-7bc253246150",
+        "options": {}
+      },
+      "id": "f31405d3-34a7-475c-9cc5-6efd3692a739",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -896,
+        496
+      ],
+      "webhookId": "20ee0a8d-6a1b-4faf-9f58-7bc253246150"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Todas as Mensagens').first().json.listaMensagens }}",
+        "options": {
+          "systemMessage": "={{ $('CONFIGURAÇÃO IA').first().json.prompt }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3584,
+        432
+      ],
+      "id": "7f5a924b-deb7-4c6b-8dbc-7bfc8d65aaf6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5-chat-latest"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3120,
+        1296
+      ],
+      "id": "bff57495-c99f-485f-9b88-97aac1bf7bc5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Vd1cCBQkv4IVwGDZ",
+          "name": "OpenAi Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "file.ogg",
+          "mimeType": "application/ogg"
+        }
+      },
+      "id": "5a8e1b61-8a94-4935-a779-9f671d3a6142",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1520,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $('Webhook').item.json.body[\"message[add][0][attachment][link]\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f2e76818-efc3-4fd6-88e0-62b86359aadf",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "495a8682-b219-471f-b633-0aadc03abee3",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        1696,
+        416
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "Vd1cCBQkv4IVwGDZ",
+          "name": "OpenAi Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Descreva todo o conteudo da imagem. Responda sem acento, sem hifens",
+        "inputType": "base64",
+        "options": {}
+      },
+      "id": "a2ce37fc-e20e-4a9f-834f-b39aa1ca1c61",
+      "name": "OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        1808,
+        752
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "Vd1cCBQkv4IVwGDZ",
+          "name": "OpenAi Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "a497a98c-4906-4d41-b353-c03a9492cfe0",
+      "name": "transcribe voice",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1600,
+        1056
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "Vd1cCBQkv4IVwGDZ",
+          "name": "OpenAi Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "ead847ea-debe-4c53-bc85-e658f6f79321",
+                    "leftValue": "={{ $('Webhook').first().json.body[\"message[add][0][attachment][type]\"] }}",
+                    "rightValue": "url",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "document"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "c0e434dd-1268-421d-b81b-3a5e90ed9550",
+                    "leftValue": "={{ $('Webhook').first().json.body[\"message[add][0][attachment][type]\"] }}",
+                    "rightValue": "picture",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').first().json.body[\"message[add][0][attachment][type]\"] }}",
+                    "rightValue": "voice",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "9958071b-8c05-466f-b5d6-6f635c0a9ef5"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "text"
+        }
+      },
+      "id": "579ed798-3710-4b88-8d84-42d71ad56bbd",
+      "name": "Switch3",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        912,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $('Webhook').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1306356d-0204-4b07-9483-9decac2903f6",
+      "name": "CONTEÚDO BASE64 DOCUMENTO",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 5.2 - IMAGEM",
+        "height": 300,
+        "width": 1060,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "70251438-2316-4583-b2a3-d1a99959018b",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 5.3 - ÁUDIO",
+        "height": 200,
+        "width": 1060,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        992
+      ],
+      "typeVersion": 1,
+      "id": "76758d21-039d-437e-939d-c3828fab3dba",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').item.json.body[\"message[add][0][attachment][link]\"] }}",
+        "options": {}
+      },
+      "id": "1dec7722-166a-4c95-8017-2d3b5e7ee684",
+      "name": "BAIXA O ÁUDIO",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1392,
+        1056
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d88c137-383f-4307-b3cc-1f6a560ea67b",
+              "name": "contato_id",
+              "value": "={{ $('BUSCA CONTATO1').first().json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "7e2f520e-4952-425b-82ca-792cc46680d4",
+              "name": "mensagem",
+              "value": "={{ $json.text || $('Webhook').first().json.body['message[add][0][text]'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a3eba45b-84ba-433c-ade7-e56ae7e8cd58",
+      "name": "MENSAGEM DO CONTATO",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2336,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 6 - MENSAGEM DO CONTATO",
+        "height": 1140,
+        "width": 760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2256,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "47084442-2c0b-47ac-a066-9881c2462a91",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fdcf2e57-188a-4d02-9844-84f7803890ef",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1808,
+        1056
+      ],
+      "id": "7d047968-5b7f-4746-83b8-79f97cc663d2",
+      "name": "Transcrição de Áudio"
+    },
+    {
+      "parameters": {
+        "amount": "=20"
+      },
+      "id": "7fb27341-d654-4c2c-b7c5-92add33339c0",
+      "name": "Wait4",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2528,
+        528
+      ],
+      "webhookId": "c76490a3-cf87-4760-8d19-c2d3104a54a2"
+    },
+    {
+      "parameters": {},
+      "id": "74602ff7-5703-4172-810e-cef367be2a78",
+      "name": "No Operation, do nothing3",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2448,
+        1104
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "21fd20d7-f940-4a66-91d5-5ea4c031bb50",
+              "leftValue": "={{ $('MENSAGEM DO CONTATO').last().json.mensagem }}",
+              "rightValue": "={{ $('Webhook').first().json.body[\"message[add][0][text]\"] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ef9544dd-aea3-4375-88aa-235089f7fe6f",
+      "name": "SE A ÚLTIMA MSG REGISTRADA FOR IGUAL A MSG DO WEBHOOK",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2528,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b7a68827-7747-41ff-8426-6c9eb9eb4785",
+              "name": "listaMensagens",
+              "value": "={{ $json.messages.reverse().join(', ') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2816,
+        640
+      ],
+      "id": "57f0db24-93a1-441d-8550-0ba814fb2809",
+      "name": "Todas as Mensagens"
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 5.4 - TEXTO",
+        "height": 220,
+        "width": 1060,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        1232
+      ],
+      "typeVersion": 1,
+      "id": "cdb93b10-8334-40ba-8c99-2ac86ce9fcdf",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pipelines = $('BUSCA FUNIS DE VENDAS E ESTÁGIOS').first().json._embedded.pipelines\nconst lead = $('BUSCA LEAD').first().json\n\nconst pipeline_atual = pipelines.find(el => el.id === lead.pipeline_id)\nconst status_atual = pipeline_atual._embedded.statuses.find(el => el.id === lead.status_id)\n\nreturn {\n  pipeline_atual,\n  status_atual\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2800,
+        1104
+      ],
+      "id": "8ff40931-7c65-4c66-a802-58b2d23688d4",
+      "name": "Funil e Status Atual do Lead"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1568,
+        752
+      ],
+      "id": "bff71ad6-86ae-4bc9-a5bd-609e30356b07",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "messages",
+          "mode": "list",
+          "cachedResultName": "messages"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "contact_id": "={{ $('Webhook').first().json.body[\"message[add][0][contact_id]\"] }}",
+            "message": "={{ $json.text || $json.content }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contact_id",
+              "displayName": "contact_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2048,
+        752
+      ],
+      "id": "880dfecc-5130-4791-9553-87fa83d4da63",
+      "name": "Salva mensagem no banco - arquivo",
+      "credentials": {
+        "postgres": {
+          "id": "wD3vjsFPdNshOKca",
+          "name": "Postgres Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "messages",
+          "mode": "list",
+          "cachedResultName": "messages"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "contact_id": "={{ $('Webhook').item.json.body[\"message[add][0][contact_id]\"] }}",
+            "message": "={{ $('Webhook').item.json.body[\"message[add][0][text]\"] }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contact_id",
+              "displayName": "contact_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2048,
+        1264
+      ],
+      "id": "8b1a605b-5e7c-4c90-8c80-ef724a58b959",
+      "name": "Salva mensagem no banco - texto",
+      "credentials": {
+        "postgres": {
+          "id": "wD3vjsFPdNshOKca",
+          "name": "Postgres Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "messages",
+          "mode": "list",
+          "cachedResultName": "messages"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "contact_id",
+              "value": "={{ $('Webhook').first().json.body[\"message[add][0][contact_id]\"] }}"
+            }
+          ]
+        },
+        "sort": {
+          "values": [
+            {
+              "column": "id"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2336,
+        832
+      ],
+      "id": "d06ef19a-738f-4d75-91cd-05b6abac37cb",
+      "name": "Postgres - Busca Mensagens",
+      "credentials": {
+        "postgres": {
+          "id": "wD3vjsFPdNshOKca",
+          "name": "Postgres Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const postgres_messages = $input.all();\nconst messages = [];\n\nfor (const el of postgres_messages) {\n  messages.push(el.json.message);\n}\n\nreturn { messages };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2816,
+        480
+      ],
+      "id": "b78f0e2f-44ed-4902-85ca-ca4e9ebd7429",
+      "name": "Junta Mensagens"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "messages",
+          "mode": "list",
+          "cachedResultName": "messages"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "contact_id",
+              "value": "={{ $('Webhook').first().json.body[\"message[add][0][contact_id]\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2816,
+        848
+      ],
+      "id": "1093a7ad-097a-475d-8afc-403d76b9a5ea",
+      "name": "Postgres - DELETA MENSAGENS",
+      "credentials": {
+        "postgres": {
+          "id": "wD3vjsFPdNshOKca",
+          "name": "Postgres Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 5 - DEFINE O TIPO DE MENSAGEM E ORGANIZA PARA O AGENTE",
+        "height": 1140,
+        "width": 280,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        832,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "73668253-8745-4785-b882-452507ac9222",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 5.1 - DOCUMENTO",
+        "height": 300,
+        "width": 1060,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "248c1d29-e83d-4f43-876a-a3944bd41163",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## IA PRINCIPAL",
+        "height": 1140,
+        "width": 1140,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3056,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "dec1e2d8-d3f3-489e-b029-35ed3536009a",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5744,
+        1184
+      ],
+      "id": "3e31cf66-730d-47be-a269-9372f903bc5d",
+      "name": "Wait2",
+      "webhookId": "4c4187b2-128c-4107-9361-8789cda25e6a"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1e66db0-00dc-481d-951c-1fde558e268e",
+              "name": "text",
+              "value": "={{ $json.output.split('\\n') }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e47ff14d-d51b-4dd0-8dbd-c5cb44240ad1",
+      "name": "Divide as mensagens",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4304,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "text",
+        "options": {}
+      },
+      "id": "36443225-6603-4a61-bffd-dd063dd71c5d",
+      "name": "Separa as mensagens",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        4528,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "673d434d-c814-4735-8c0a-af148284c6b2",
+      "name": "Loop",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4768,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4944,
+        1184
+      ],
+      "id": "da152dc2-89cc-4ef6-b096-6bb8dc021c19",
+      "name": "Mensagem"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://ia.kommetrik.com.br/api/executions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=2dvN3WvrSQzdQQ9A4R45OKGanzaV3X_qOTtKYomkJUjyq1URq5E496TR9Q1Hs_hqelub3TLOgoO2WwFnOh6xHn9tHM89"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "domain",
+              "value": "={{ $('Webhook').first().json.body[\"account[_links][self]\"] }}"
+            },
+            {
+              "name": "kommo_account_id",
+              "value": "={{ $('Webhook').first().json.body['account[id]'] }}"
+            },
+            {
+              "name": "chat_id",
+              "value": "={{ $('Webhook').first().json.body['message[add][0][chat_id]'] }}"
+            },
+            {
+              "name": "entity_id",
+              "value": "={{ $('Webhook').first().json.body['message[add][0][entity_id]'] }}"
+            },
+            {
+              "name": "element_type",
+              "value": "={{ $('Webhook').first().json.body['message[add][0][element_type]'] }}"
+            },
+            {
+              "name": "user_name",
+              "value": "={{ $('Webhook').first().json.body['message[add][0][author][name]'] }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "author_id",
+              "value": "={{ $('Webhook').first().json.body['message[add][0][author][id]'] }}"
+            },
+            {
+              "name": "talk_id",
+              "value": "={{ $('Webhook').first().json.body['message[add][0][talk_id]'] }}"
+            },
+            {
+              "name": "contact_id",
+              "value": "={{ $('Webhook').first().json.body['message[add][0][contact_id]'] }}"
+            },
+            {
+              "name": "token_kommo",
+              "value": "={{ $('CONFIGURAÇÃO IA').first().json.kommo_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5440,
+        1184
+      ],
+      "id": "b74b76b0-d5e2-46a3-badb-57534a4b6558",
+      "name": "Envia mensagem na Kommo"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        5168,
+        992
+      ],
+      "id": "bfe9857e-6b39-4708-8936-1a1ccc4b170f",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "699a472e-2084-4dc6-a9b7-7dbccf5d6da6",
+              "leftValue": "={{ $json.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5168,
+        1184
+      ],
+      "id": "b9db81ca-42f6-4a46-ade0-5f3aa071992d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## Envio de Mensagem na Kommo",
+        "height": 580,
+        "width": 1680,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        864
+      ],
+      "id": "025f0a9c-c67d-45f8-bf7e-b25736603adb",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "followup",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "entity_id",
+              "keyValue": "={{ $('Webhook').first().json.body[\"message[add][0][entity_id]\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4320,
+        512
+      ],
+      "id": "2756e80a-1a07-4449-8e48-204decf1104b",
+      "name": "Busca Follow",
+      "alwaysOutputData": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "tableId": "followup",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "entity_id",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][entity_id]\"] }}"
+            },
+            {
+              "fieldId": "direction",
+              "fieldValue": "bot"
+            },
+            {
+              "fieldId": "last_interaction_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "domain",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"account[_links][self]\"] }}"
+            },
+            {
+              "fieldId": "chat_id",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][chat_id]\"] }}"
+            },
+            {
+              "fieldId": "entity_id",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][entity_id]\"] }}"
+            },
+            {
+              "fieldId": "element_type",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][element_type]\"] }}"
+            },
+            {
+              "fieldId": "user_name",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][author][name]\"] }}"
+            },
+            {
+              "fieldId": "author_id",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][author][id]\"] }}"
+            },
+            {
+              "fieldId": "talk_id",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][talk_id]\"] }}"
+            },
+            {
+              "fieldId": "contact_id",
+              "fieldValue": "={{ $('Webhook').first().json.body[\"message[add][0][contact_id]\"] }}"
+            },
+            {
+              "fieldId": "account_name",
+              "fieldValue": "Martins Moura"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4704,
+        608
+      ],
+      "id": "c73768bf-ca4e-4979-83b4-c233ec8f37fe",
+      "name": "Cria registro",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "followup",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "entity_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook').first().json.body[\"message[add][0][entity_id]\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "direction",
+              "fieldValue": "bot"
+            },
+            {
+              "fieldId": "last_interaction_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "follows_count",
+              "fieldValue": "0"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4704,
+        384
+      ],
+      "id": "397a3e92-39bc-4b8d-86fe-8eb7419bd88e",
+      "name": "Atualiza",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fbbf0458-72e3-49f2-9a2d-07bcfb570171",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4528,
+        512
+      ],
+      "id": "45a0acca-a84e-48da-8ee2-77c200685192",
+      "name": "If2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## FOLLOWUP",
+        "height": 520,
+        "width": 1680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        304
+      ],
+      "id": "d106a2cd-79b6-4fef-ae09-d2dcfc47f3f2",
+      "name": "Sticky Note24"
+    },
+    {
+      "parameters": {
+        "content": "# Execução de workflow paralela\n\nAs tools irão chamar esta execução\n\nUtilize o parâmetro action para\ndirecionar o fluxo de execução",
+        "height": 1144,
+        "width": 428,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        5952,
+        304
+      ],
+      "id": "0da7e959-cd95-4664-bfa8-0b1bc6c77dbc",
+      "name": "Sticky Note28"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').first().json.body['message[add][0][contact_id]'] }}",
+        "tableName": "ruarcke",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        3280,
+        1296
+      ],
+      "id": "7ab51cec-0c07-4a0e-a040-ad2b02fdf6c4",
+      "name": "Postgres Chat Memory4",
+      "credentials": {
+        "postgres": {
+          "id": "wD3vjsFPdNshOKca",
+          "name": "Postgres Plástica Center"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6e3ddd36-99ff-4461-9ac8-4b4bb905f7c5",
+                    "leftValue": "={{ $('Execução de Webhook').item.json.query.acao }}",
+                    "rightValue": "verificarAgenda",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "verificarAgenda"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0ec71e83-ef16-487f-b627-d7daab04230b",
+                    "leftValue": "={{ $('Execução de Webhook').item.json.query.acao }}",
+                    "rightValue": "altera_nome",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "altera_nome"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ab9b535f-ab3e-4123-8bbe-1eecb62c6318",
+                    "leftValue": "={{ $('Execução de Webhook').item.json.query.acao }}",
+                    "rightValue": "busca_evento_agenda",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "busca_evento_agenda"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "798b7091-7673-4a4e-ae27-f2df2e5710c6",
+                    "leftValue": "={{ $('Execução de Webhook').item.json.query.acao }}",
+                    "rightValue": "cancela_evento_agenda",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancela_evento_agenda"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e475d6ac-7e8f-4e55-aad8-19cd89e4a584",
+                    "leftValue": "={{ $('Execução de Webhook').item.json.query.acao }}",
+                    "rightValue": "criar_agendamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "criar_agendamento"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        6176,
+        768
+      ],
+      "id": "312260c2-17d3-4acc-a6bf-ba47918f7ab8",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "content": "## AÇÕES",
+        "height": 1164,
+        "width": 456
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        6416,
+        304
+      ],
+      "id": "417180be-ba0a-4420-9f6b-c390948ccdb5",
+      "name": "Sticky Note30"
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 1 - CREDENCIAIS, DADOS, STATUS, E PROMPT AGENTE\nO nó `Status Fluxo` controla se está em fase de testes ou não. Se tiver, o fluxo irá permitir ser executado somente contatos que possuem o id no campo `contatos_permitidos`\n\nO campo `contatos_permitidos` deverá conter os ids dos contatos separados por vírgula",
+        "height": 514,
+        "width": 899,
+        "color": 5
+      },
+      "id": "73d41a61-7b82-4b60-be5d-845f1929447e",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 2 - BUSCA CAMPOS, LEADS, FUNIS DE VENDAS E ESTÁGIOS DE FUNIS DE VENDAS",
+        "height": 350,
+        "width": 899,
+        "color": 6
+      },
+      "id": "33322823-8589-43f4-9008-0a37e5fe2f0e",
+      "name": "Sticky Note12",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 3 - Verificar a tag no lead\n\nVerifica se o lead tem a tag definida em `Campos Iniciais`\n\nSe tiver, continua o fluxo\n\nSe não tiver, faz uma retentativa depois de 10 segundos\npara verificar se foi atribuída através de uma execução\n de fluxo de automação. \n\nSe tiver na retentativa, continua\nSe não tiver, aborta a execução",
+        "height": 900,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "d99a579c-5d8f-4ee5-946e-8e94bc6bc739",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body['account[_links][self]'] }}/api/v4/leads/custom_fields",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('CONFIGURAÇÃO IA').first().json.kommo_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -800,
+        976
+      ],
+      "id": "9f8c5f01-c96f-47e5-afe2-234ceca15731",
+      "name": "BUSCA CAMPOS PERSONALIZADOS"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body['account[_links][self]'] }}/api/v4/leads/{{ $('Webhook').first().json.body['message[add][0][entity_id]'] }}?with=contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('CONFIGURAÇÃO IA').item.json.kommo_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -528,
+        976
+      ],
+      "id": "66b99937-9983-4650-b44d-b707d8b7329b",
+      "name": "BUSCA LEAD"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body['account[_links][self]'] }}/api/v4/leads/pipelines",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('CONFIGURAÇÃO IA').item.json.kommo_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -256,
+        976
+      ],
+      "id": "87606dc8-6287-499c-b921-e300f7aba318",
+      "name": "BUSCA FUNIS DE VENDAS E ESTÁGIOS"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b597ae62-8326-4019-9993-e324bf614d17",
+              "leftValue": "={{ \n  $('BUSCA LEAD').first().json._embedded.tags.some(\n    t => $('CONFIGURAÇÃO IA').first().json['Tags Permitidas']\n      .split(',')\n      .map(tag => tag.trim())\n      .includes(t.name)\n  ) \n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        96,
+        608
+      ],
+      "id": "5155bc52-8cf2-4456-be23-6cb9bfcac4d0",
+      "name": "SE LEAD TEM A TAG"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        608
+      ],
+      "id": "e83676f4-78fc-4139-9dba-c7c91039eaa0",
+      "name": "Espera p/ Retentativa",
+      "webhookId": "d9211eff-b920-4b02-a6b7-2d61e6c6f425"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body['account[_links][self]'] }}/api/v4/leads/{{ $('Webhook').item.json.body['message[add][0][entity_id]'] }}?with=contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('CONFIGURAÇÃO IA').item.json.kommo_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        816
+      ],
+      "id": "d83c6a2e-e5e2-4218-8137-7859d78e85b3",
+      "name": "BUSCA LEAD (RETENTATIVA)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b597ae62-8326-4019-9993-e324bf614d17",
+              "leftValue": "={{ \n  $('BUSCA LEAD (RETENTATIVA)').first().json._embedded.tags.some(\n    t => $('CONFIGURAÇÃO IA').first().json['Tags Permitidas']\n      .split(',')\n      .map(tag => tag.trim())\n      .includes(t.name)\n  ) \n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        816
+      ],
+      "id": "40219633-1e7d-432f-b325-b36c1ff8bc06",
+      "name": "SE LEAD TEM A TAG (RETENTATIVA)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        96,
+        1024
+      ],
+      "id": "fe830891-f47a-4af0-a4fc-815d804ed35d",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c729c33c-a888-4aac-a7d7-94c6e839a1e9",
+              "leftValue": "={{ $json[\"Status (1 para ativo/0 para inativo)\"] }}",
+              "rightValue": "1",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -512,
+        496
+      ],
+      "id": "c805a75b-eaff-41d0-a063-34d9e30d81f3",
+      "name": "Se Ativo"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        656
+      ],
+      "id": "4f8ddbbf-c2cc-45ef-b907-505baa89fd58",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "255f7f52-1921-4658-b86a-3c82f9c145e8",
+              "name": "kommo_token",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a7e819f1-2d34-4998-8f41-69c4f8cd8be8",
+              "name": "Tags Permitidas",
+              "value": "=IA",
+              "type": "string"
+            },
+            {
+              "id": "f28085d3-5125-4d06-a0c3-d3e64c3db3dc",
+              "name": "Status (1 para ativo/0 para inativo)",
+              "value": "1",
+              "type": "string"
+            },
+            {
+              "id": "66b96889-cb74-47a8-af5a-1d5f1161aa7e",
+              "name": "URL Kommetrik",
+              "value": "https://ia.kommetrik.com.br/api/executions",
+              "type": "string"
+            },
+            {
+              "id": "6ed345d1-5fb3-4d18-9a85-12ba10decfef",
+              "name": "Token Kommetrik",
+              "value": "eTH6oRyBZ6KcYpF5HvInT1qhRjRPCa_uJJUwkyrvRrYRa36x9j92g3qATvnrL_iAuINjgxhSHhtMaL3QR8ZmAFlKSvQT",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "653567f4-f898-4e6f-a9c5-922bae4c189e",
+      "name": "CONFIGURAÇÃO IA",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -688,
+        496
+      ],
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body['account[_links][self]'] }}/api/v4/leads/pipelines",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('CONFIGURAÇÃO IA').item.json.kommo_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        960
+      ],
+      "id": "c4fa7a74-e643-452b-beea-d055d765fd20",
+      "name": "BUSCA FUNIS DE VENDAS E ESTÁGIOS2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega os pipelines e o lead atual\nconst pipelines = $('BUSCA FUNIS DE VENDAS E ESTÁGIOS').first().json._embedded.pipelines;\nconst lead = $('BUSCA LEAD').first().json;\n\n// Busca o pipeline atual pelo ID do lead\nconst pipelineAtual = pipelines.find(p => p.id === lead.pipeline_id);\n\n// Se encontrou o pipeline, busca o estágio atual\nconst statusAtual = pipelineAtual?._embedded?.statuses.find(s => s.id === lead.status_id);\n\n// Retorna o nome do funil e do estágio\nreturn [\n  {\n    json: {\n      pipeline_id: lead.pipeline_id,\n      pipeline_nome: pipelineAtual?.name || 'Desconhecido',\n      status_id: lead.status_id,\n      estagio_nome: statusAtual?.name || 'Desconhecido'\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        1200
+      ],
+      "id": "50c1edbd-1e15-41f6-8049-4318ce4f4dcc",
+      "name": "BUSCA FUNIL DO LEAD1"
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log('123',$prevNode.name)\nlet lead\n\nswitch($prevNode.name){\n  case 'SE LEAD TEM A TAG':\n    lead = $('BUSCA LEAD').first().json\n    break;\n\n   case 'SE LEAD TEM A TAG (RETENTATIVA)':\n    lead = $('BUSCA LEAD (RETENTATIVA)').first().json\n    break;\n}\n\n\nreturn {data: lead}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        544
+      ],
+      "id": "6b95b3e6-d425-47de-ba3c-50736b5b6956",
+      "name": "DADOS DO LEAD1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Webhook').first().json.body['account[_links][self]'] }}/api/v4/contacts/{{ $('Webhook').first().json.body['message[add][0][contact_id]'] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('CONFIGURAÇÃO IA').item.json.kommo_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        768
+      ],
+      "id": "cd04a633-7d59-402a-9eff-f62afd5f8dc0",
+      "name": "BUSCA CONTATO1"
+    },
+    {
+      "parameters": {
+        "content": "## PASSO 4 - Define dados do lead e busca contato",
+        "height": 1140,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        304
+      ],
+      "id": "69731e67-b042-4f2d-8548-d5f41647435f",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "## RESETA HITORICO DO LEAD",
+        "height": 280,
+        "width": 512,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d2d0f360-94c7-4146-92dd-19d127fe570e",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        6016,
+        816
+      ],
+      "id": "c1e6dcbd-2706-4e7b-9bd2-da074672c8ec",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "99d34289-0c8a-4f47-8d6e-3900b3250db0",
+              "leftValue": "={{ $('Webhook').item.json.body['message[add][0][text]'].toLowerCase() }}",
+              "rightValue": "reset",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -304,
+        480
+      ],
+      "id": "78d763f3-9afa-48a8-a1da-4e28657f3bb3",
+      "name": "If Reset"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "metrik",
+          "mode": "list",
+          "cachedResultName": "metrik"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $('Webhook').item.json.body['message[add][0][contact_id]'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        192,
+        96
+      ],
+      "id": "4ec30dd9-daa9-4134-afae-cdef320aaef9",
+      "name": "Postgres - Exclui a memória de mensagem do lead1",
+      "credentials": {
+        "postgres": {
+          "id": "wD3vjsFPdNshOKca",
+          "name": "Postgres Plástica Center"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.metriksales.com",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "1269",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "92a4fd93-99b1-4df1-94a4-1cd5fef2cb0e",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "webhook.metriksales.com",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "971218aeaba4",
+            "x-real-ip": "169.150.216.79"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "account[subdomain]": "metriksales",
+            "account[id]": "33123327",
+            "account[_links][self]": "https://metriksales.amocrm.com",
+            "message[add][0][id]": "bdd56f15-3d4c-4f2e-934b-b3354058baf4",
+            "message[add][0][chat_id]": "33d84c68-a799-4b5d-829a-a8b73673af12",
+            "message[add][0][talk_id]": "1526",
+            "message[add][0][contact_id]": "23868509",
+            "message[add][0][text]": "",
+            "message[add][0][created_at]": "1754078351",
+            "message[add][0][attachment][type]": "voice",
+            "message[add][0][attachment][link]": "https://drive-g.kommo.com/download/ab0c7237-252a-5d1d-b4f8-ab26ba5b44f0/48883b24-fe61-4d33-9d80-6883a0b3d2b6/cb106130-dc46-45d0-b974-18756a367ece/data.m4a",
+            "message[add][0][attachment][file_name]": "data.m4a",
+            "message[add][0][element_type]": "2",
+            "message[add][0][entity_type]": "lead",
+            "message[add][0][element_id]": "23176411",
+            "message[add][0][entity_id]": "23176411",
+            "message[add][0][type]": "incoming",
+            "message[add][0][author][id]": "887ebd26-d660-42ef-b41a-86dae7cc358f",
+            "message[add][0][author][type]": "external",
+            "message[add][0][author][name]": "Renan Pedroso",
+            "message[add][0][origin]": "com.amocrm.amocrmwa"
+          },
+          "webhookUrl": "https://webhook.metriksales.com/webhook/20ee0a8d-6a1b-4faf-9f58-7bc253246150",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "CONFIGURAÇÃO IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Divide as mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Salva mensagem no banco - arquivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Salva mensagem no banco - arquivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "transcribe voice": {
+      "main": [
+        [
+          {
+            "node": "Transcrição de Áudio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "CONTEÚDO BASE64 DOCUMENTO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "BAIXA O ÁUDIO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Salva mensagem no banco - texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONTEÚDO BASE64 DOCUMENTO": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BAIXA O ÁUDIO": {
+      "main": [
+        [
+          {
+            "node": "transcribe voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MENSAGEM DO CONTATO": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcrição de Áudio": {
+      "main": [
+        [
+          {
+            "node": "Salva mensagem no banco - arquivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Busca Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SE A ÚLTIMA MSG REGISTRADA FOR IGUAL A MSG DO WEBHOOK": {
+      "main": [
+        [
+          {
+            "node": "Junta Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Todas as Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Postgres - DELETA MENSAGENS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Funil e Status Atual do Lead": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salva mensagem no banco - arquivo": {
+      "main": [
+        [
+          {
+            "node": "MENSAGEM DO CONTATO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salva mensagem no banco - texto": {
+      "main": [
+        [
+          {
+            "node": "MENSAGEM DO CONTATO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - Busca Mensagens": {
+      "main": [
+        [
+          {
+            "node": "SE A ÚLTIMA MSG REGISTRADA FOR IGUAL A MSG DO WEBHOOK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Junta Mensagens": {
+      "main": [
+        [
+          {
+            "node": "Todas as Mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - DELETA MENSAGENS": {
+      "main": [
+        [
+          {
+            "node": "Funil e Status Atual do Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Divide as mensagens": {
+      "main": [
+        [
+          {
+            "node": "Separa as mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separa as mensagens": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia mensagem na Kommo": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Envia mensagem na Kommo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Follow": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Atualiza",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cria registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory4": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSCA CAMPOS PERSONALIZADOS": {
+      "main": [
+        [
+          {
+            "node": "BUSCA LEAD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSCA LEAD": {
+      "main": [
+        [
+          {
+            "node": "BUSCA FUNIS DE VENDAS E ESTÁGIOS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSCA FUNIS DE VENDAS E ESTÁGIOS": {
+      "main": [
+        [
+          {
+            "node": "SE LEAD TEM A TAG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SE LEAD TEM A TAG": {
+      "main": [
+        [
+          {
+            "node": "DADOS DO LEAD1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Espera p/ Retentativa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Espera p/ Retentativa": {
+      "main": [
+        [
+          {
+            "node": "BUSCA LEAD (RETENTATIVA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSCA LEAD (RETENTATIVA)": {
+      "main": [
+        [
+          {
+            "node": "SE LEAD TEM A TAG (RETENTATIVA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SE LEAD TEM A TAG (RETENTATIVA)": {
+      "main": [
+        [
+          {
+            "node": "DADOS DO LEAD1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Se Ativo": {
+      "main": [
+        [
+          {
+            "node": "If Reset",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONFIGURAÇÃO IA": {
+      "main": [
+        [
+          {
+            "node": "Se Ativo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSCA FUNIS DE VENDAS E ESTÁGIOS2": {
+      "main": [
+        [
+          {
+            "node": "BUSCA FUNIL DO LEAD1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSCA FUNIL DO LEAD1": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DADOS DO LEAD1": {
+      "main": [
+        [
+          {
+            "node": "BUSCA CONTATO1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSCA CONTATO1": {
+      "main": [
+        [
+          {
+            "node": "BUSCA FUNIS DE VENDAS E ESTÁGIOS2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Reset": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Exclui a memória de mensagem do lead1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "BUSCA CAMPOS PERSONALIZADOS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e72ff93c-f99e-4ce7-b1fb-e817bd7d7939",
+  "meta": {
+    "instanceId": "4148ad804141d54758c02507cc84e9af1df5779964e489f3a452d46ca60c59fb"
+  },
+  "id": "ocTD08yFuVhLcVTi",
+  "tags": []
+}
