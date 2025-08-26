@@ -1,6 +1,6 @@
 # 👩‍💻 About Me
 
-I'm transitioning into the tech industry with a strong focus on **Artificial Intelligence** through hands-on learning at Rocketseat. My interests lie in **applied AI**, **DevOps**, and building impactful solutions that solve real-world problems.
+Strong focus on **Artificial Intelligence** through hands-on learning at Rocketseat. My interests lie in **applied AI**, **DevOps**, and building impactful solutions that solve real-world problems.
 
 Currently, I'm developing projects involving **data analysis**, **regression with Scikit-learn**, and **data visualization** to solidify my knowledge and kickstart my professional journey in tech.
 
